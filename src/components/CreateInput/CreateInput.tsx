@@ -17,9 +17,9 @@ function CreateInput() {
       />
       <div className="w-full divide-y divide-gray-200">
         <textarea 
-        name="What's happening?" 
+        placeholder="What is happening!?" 
         rows={2}
-        className="border-none w-full outline-none tracking-wide min-h-[3.125rem] text-gray-700"
+        className="border-none w-full outline-none tracking-wide min-h-[3.125rem] text-gray-700 placeholder-shown:text-lg resize-none"
         >
         </textarea>
         <div className="flex items-center justify-between pt-2.5">
