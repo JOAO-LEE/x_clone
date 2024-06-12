@@ -1,7 +1,12 @@
+"use client"
+
 import { XLogo, House } from "@phosphor-icons/react/dist/ssr";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 function Sidebar() {
+  const { data: session } = useSession();
+
   return (
     <div 
     className="flex flex-col gap-4 p-3 w-64"
@@ -27,11 +32,28 @@ function Sidebar() {
           Home
         </span>
       </Link>
-      <button 
-      className="bg-blue-400 text-white rounded-full hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md hidden xl:inline font-semibold"
-      >
-        Sign in
-      </button>
+     {
+      !session 
+      ? 
+        (
+          <button
+          onClick={() => signIn("google")} 
+          className="bg-blue-400 text-white rounded-full hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md hidden xl:inline font-semibold"
+          >
+            Sign in
+          </button>
+       
+        )
+      :
+        (
+          <button
+          onClick={() => signOut()} 
+          className="bg-blue-400 text-white rounded-full hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md hidden xl:inline font-semibold"
+          >
+            Sign out
+          </button>
+        )
+    }
     </div>
   )
 }

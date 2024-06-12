@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import News from "@/components/News/News";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import "./globals.css";
+import { SessionWrapper } from "@/components/SessionWrapper/SessionWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,21 +19,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="flex justify-between max-w-6xl mx-auto">
-          <div className="hidden sm:inline border-r h-screen">
-            <Sidebar />
+    <SessionWrapper>
+      <html lang="en">
+        <body className={inter.className}>
+          <div className="flex justify-between max-w-6xl mx-auto">
+            <div className="hidden sm:inline border-r h-screen">
+              <Sidebar />
+            </div>
+            <div>
+              {children}
+            </div>
+            <div className="hidden lg:flex lg:flex-col p-3 h-screen border-l  w-[24rem]">
+              <SearchBar />
+              <News />
+            </div>
           </div>
-          <div>
-            {children}
-          </div>
-          <div className="hidden lg:flex lg:flex-col p-3 h-screen border-l  w-[24rem]">
-            <SearchBar />
-            <News />
-          </div>
-        </div>
-      </body>
-    </html>
+        </body>
+      </html>
+    </SessionWrapper>
   );
 }
