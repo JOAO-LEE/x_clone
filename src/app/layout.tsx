@@ -26,7 +26,7 @@ export default function RootLayout({
             <div className="hidden sm:inline border-r h-screen">
               <Sidebar />
             </div>
-            <div>
+            <div className="w-2xl flex-1">
               {children}
             </div>
             <div className="hidden lg:flex lg:flex-col p-3 h-screen border-l  w-[24rem]">
