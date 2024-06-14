@@ -1,0 +1,24 @@
+.post-created {
+  position: absolute;
+  visibility: hidden;
+  right: 50%;
+  top: -2rem;
+  opacity: 0;
+}
+
+@keyframes post-created-animation-showing  {
+  50% {
+    top: 0.25rem;
+    opacity: 1.0;
+  }
+
+  75% {
+    visibility: visible;
+    opacity: 0.5;
+  }
+
+  100% {
+    top: -2rem;
+    opacity: 0;
+  }
+}

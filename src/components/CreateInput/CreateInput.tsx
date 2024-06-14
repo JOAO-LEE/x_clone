@@ -5,24 +5,22 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { app } from "../../../firebase";
+import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
+import "./styles.css";
 
 function CreateInput() {
   const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [loadingImage, setLoadingImage] = useState<boolean>(true);
+  const [loadingImage, setLoadingImage] = useState<boolean>(false);
+  const [loadingPost, setLoadingPost] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState(false);
+  const [postText, setPostText] = useState<string>("");
   const { data: session } = useSession();
   const filePickerRef = useRef<HTMLInputElement>(null);
-
-
-  useEffect(() => {
-    if (selectedFile) {
-      uploadImageToStorage();
-
-    }
-  }, [selectedFile]);
-
+  const postCreatedRef = useRef<HTMLDivElement>(null);
   
+  if (!session) return null;
+
   const addImageToPost = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
       const file = e.target.files[0];
@@ -32,8 +30,8 @@ function CreateInput() {
       }
     }
     return;
-  }
-;
+  };
+
   const uploadImageToStorage = () => {
     setLoadingImage(true);
     setUploadError(false);
@@ -55,13 +53,57 @@ function CreateInput() {
         setLoadingImage(false);
       });
     })
-
   };
 
-  if (!session) return null;
   
+  const handleSubmit = async (): Promise<void> => {
+    // setLoadingPost(true);
+    
+    const db = getFirestore(app);
+    const docRef = await addDoc(collection(db, 'posts'), 
+    {
+      name: session.user.name,
+      uid: session.user.uid,
+      username: session.user.username,
+      postText,
+      profileImage: session.user.image,
+      timestamp: serverTimestamp()
+    });
+
+    if (selectedFile) {
+      uploadImageToStorage();
+      setLoadingImage(true);
+
+    }
+
+    postCreatedConfirmation();
+
+    setLoadingPost(false);
+    setPostText("");
+    setImageFileUrl(null);
+    setSelectedFile(null);
+  };
+
+  const postCreatedConfirmation = () => {
+    if (postCreatedRef.current) {
+      postCreatedRef.current.style.animation = "post-created-animation-showing 4s normal 500ms ease-in-out";
+
+      postCreatedRef.current.addEventListener("animationend", () => {
+        postCreatedRef.current!.style.animation = "";
+
+      }, false);
+    }
+  };
+  
+
   return (
     <div className="flex border-b border-gray-200 p-3 space-x-3 w-full">
+      <div 
+      className={`bg-blue-400 p-2 rounded-full text-gray-100 font-bold text-sm z-50 post-created`}
+      ref={postCreatedRef}
+      >
+        <p>Post created!</p>
+      </div>
       <img 
       src={session.user.image} 
       alt="user image" 
@@ -69,6 +111,8 @@ function CreateInput() {
       />
       <div className="w-full divide-y divide-gray-200">
         <textarea 
+        onChange={(e) => setPostText(e.target.value)}
+        value={postText}
         placeholder="What is happening!?" 
         rows={2}
         className="border-none w-full outline-none tracking-wide min-h-[3.125rem] text-gray-700 placeholder-shown:text-lg resize-none text-lg"
@@ -85,9 +129,8 @@ function CreateInput() {
               }}>
                 <img 
                 src={imageFileUrl} 
-                // alt="Selected image" 
                 className={`w-full max-h-[250px] object-cover rounded-sm ${loadingImage && "animate-pulse"}`} 
-                onError={(e) => e.currentTarget.src = ""}
+                onError={(e) => e.currentTarget.src = "" }
                 />
                 <div 
                 className="group absolute top-2 right-2 text-xl bg-black bg-opacity-90 rounded-full p-2 text-gray-100 cursor-pointer hover:bg-gray-600 transition duration-200">
@@ -100,7 +143,7 @@ function CreateInput() {
           uploadError 
           && 
             (
-              <div className="text-semibold text-red-500 flex gap-2 text-xs items-center">
+              <div className="text-semibold text-red-500 flex gap-2 text-xs items-center divide-y-0">
                 <WarningCircle />
                 <span>An error occurred uploading the image: the image is too big!</span>
               </div>
@@ -119,7 +162,12 @@ function CreateInput() {
           onChange={(e) => addImageToPost(e) }  
 
           />
-          <button className="bg-blue-400 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:opacity-50">Post</button>
+          <button
+          onClick={handleSubmit}
+          disabled={postText?.trim() === "" || loadingImage || loadingPost} 
+          className="bg-blue-400 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:opacity-50 disabled:hover:brightness-100">
+            Post
+          </button>
         </div>
       </div>
     </div>
