@@ -67,13 +67,13 @@ function CreateInput() {
       username: session.user.username,
       postText,
       profileImage: session.user.image,
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
+      imageFileUrl
     });
 
     if (selectedFile) {
-      uploadImageToStorage();
       setLoadingImage(true);
-
+      uploadImageToStorage();
     }
 
     postCreatedConfirmation();
