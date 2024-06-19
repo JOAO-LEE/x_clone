@@ -90,10 +90,8 @@ function CreateInput() {
   const postCreatedConfirmation = () => {
     if (postCreatedRef.current) {
       postCreatedRef.current.style.animation = "post-created-animation-showing 4s normal 500ms ease-in-out";
-
       postCreatedRef.current.addEventListener("animationend", () => {
         postCreatedRef.current!.style.animation = "";
-
       }, false);
     }
   };

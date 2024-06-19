@@ -1,10 +1,11 @@
 import { DotsThree } from "@phosphor-icons/react/dist/ssr"
 import Link from "next/link"
+import PostActions from "../PostActions/PostActions"
 
 
 function Post({ post }: { post: any }) {
   return (
-    <div className="flex p-3 border-b border-gray-200">
+    <div className="flex p-3 border-b border-gray-20 hover:bg-gray-50 transition">
       <img 
       src={post.profileImage} 
       alt={`$${post.username} image`}
@@ -22,17 +23,22 @@ function Post({ post }: { post: any }) {
           />
         </div>
         <Link href={`/posts/${post.id}`}>
-          <p>{post.postText}</p>
+          <p className="text-gray-800 text-sm my-3">{post.postText}</p>
         </Link>
         {
           post.imageFileUrl !== null 
           &&
             (
               <Link href={`/posts/${post.id}`}>
-                <img src={post.imageFileUrl} alt="" />
+                <img 
+                src={post.imageFileUrl} 
+                alt="post-img" 
+                className="rounded-2xl mr-2" 
+                />
               </Link>
             ) 
         }
+        <PostActions />
       </div>
     </div>
   )
