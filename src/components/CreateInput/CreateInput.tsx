@@ -49,6 +49,7 @@ function CreateInput() {
       setUploadError(true);
     }, () => {
       getDownloadURL(uploadTask.snapshot.ref).then((dowloadUrl) => {
+        
         setImageFileUrl(dowloadUrl);
         setLoadingImage(false);
       });
@@ -57,9 +58,13 @@ function CreateInput() {
 
   
   const handleSubmit = async (): Promise<void> => {
-    // setLoadingPost(true);
-    
     const db = getFirestore(app);
+  
+    if (selectedFile) {
+      setLoadingImage(true);
+      uploadImageToStorage();
+    }
+
     const docRef = await addDoc(collection(db, 'posts'), 
     {
       name: session.user.name,
@@ -71,12 +76,6 @@ function CreateInput() {
       imageFileUrl
     });
 
-    if (selectedFile) {
-      setLoadingImage(true);
-      uploadImageToStorage();
-    }
-
-    
     setLoadingPost(false);
     setPostText("");
     setImageFileUrl(null);
@@ -84,10 +83,8 @@ function CreateInput() {
     postCreatedConfirmation();
     postCreatedRef.current!.addEventListener("animationend", () => {
       postCreatedRef.current!.style.animation = "";
-
       location.reload();
     }, false);
-    
   };
 
   const postCreatedConfirmation = () => {
