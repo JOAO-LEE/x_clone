@@ -76,12 +76,18 @@ function CreateInput() {
       uploadImageToStorage();
     }
 
-    postCreatedConfirmation();
-
+    
     setLoadingPost(false);
     setPostText("");
     setImageFileUrl(null);
     setSelectedFile(null);
+    postCreatedConfirmation();
+    postCreatedRef.current!.addEventListener("animationend", () => {
+      postCreatedRef.current!.style.animation = "";
+
+      location.reload();
+    }, false);
+    
   };
 
   const postCreatedConfirmation = () => {
