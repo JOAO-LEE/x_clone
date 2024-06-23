@@ -17,7 +17,8 @@ export default async function Feed() {
     <section>
       {
         posts.map((post) => (
-          <Post 
+          <Post
+          id={post.id} 
           key={post.id}
           post={post}
           />
