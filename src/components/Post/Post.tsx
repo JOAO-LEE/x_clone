@@ -38,7 +38,10 @@ function Post({ post, id }: { post: any, id: string }) {
               </Link>
             ) 
         }
-        <PostActions id={id} uid={post.uid}/>
+        <PostActions 
+        id={id} 
+        uid={post.uid}
+        />
       </div>
     </div>
   )

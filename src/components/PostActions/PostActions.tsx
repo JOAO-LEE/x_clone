@@ -5,13 +5,16 @@ import { doc, getFirestore, setDoc, serverTimestamp, onSnapshot, collection, del
 import { useSession } from "next-auth/react";
 import {app} from "../../../firebase";
 import { useEffect, useState } from "react";
-import { Like } from "@/model/Like";
+// import { Like } from "@/model/Like";
+import { useRecoilState } from "recoil";
+import { modalState } from "@/atom/modalAtom";
 
 
 function PostActions({ id, uid }: { id: string, uid: string }) {
   const {data: session } = useSession();
   const [isLiked, setIsLiked] = useState<boolean>();
   const [likes, setLikes] = useState<Array<any>>([]);
+  const [open, setOpen] = useRecoilState(modalState);
   const db = getFirestore(app);
 
 
@@ -61,20 +64,18 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
   return (
     <div className="flex justify-start p-2 text-gray-500">
       <div  className="flex-grow flex ">
-
-      <ChatCircle
-      size={"1rem"} 
-      className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 hover:text-sky-500" 
-      />
+        <ChatCircle
+        onClick={() => setOpen(!open)}
+        size={"1rem"} 
+        className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 hover:text-sky-500" 
+        />
       </div>
       <div  className="flex-grow flex ">
-
-      <Repeat 
-      size={"1rem"}
-      className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100  hover:text-green-500" 
-      />
+        <Repeat 
+        size={"1rem"}
+        className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100  hover:text-green-500" 
+        />
       </div>
-
      <div className="flex items-center gap-1.5  flex-grow">
       <Heart
         onClick={likePost} 
