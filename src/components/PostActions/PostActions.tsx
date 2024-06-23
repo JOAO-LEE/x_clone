@@ -73,10 +73,10 @@ function PostActions({ id }: { id: string }) {
             )
         }
      </div>
-      <Trash 
+      {/* <Trash 
       size={"1rem"}
       className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 hover:text-sky-500" 
-      />
+      /> */}
     </div>
   )
 }
