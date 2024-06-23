@@ -1,14 +1,14 @@
 "use client"
 
 import { ChatCircle, Heart, Repeat, Trash } from "@phosphor-icons/react";
-import { doc, getFirestore, setDoc, serverTimestamp, onSnapshot, collection, QueryDocumentSnapshot, CollectionReference, deleteDoc } from "firebase/firestore";
-import { signIn, useSession } from "next-auth/react";
+import { doc, getFirestore, setDoc, serverTimestamp, onSnapshot, collection, deleteDoc } from "firebase/firestore";
+import { useSession } from "next-auth/react";
 import {app} from "../../../firebase";
 import { useEffect, useState } from "react";
 import { Like } from "@/model/Like";
 
 
-function PostActions({ id }: { id: string }) {
+function PostActions({ id, uid }: { id: string, uid: string }) {
   const {data: session } = useSession();
   const [isLiked, setIsLiked] = useState<boolean>();
   const [likes, setLikes] = useState<Array<any>>([]);
@@ -45,20 +45,37 @@ function PostActions({ id }: { id: string }) {
       )
       return;
     }
-    // signIn();
+  };
+
+  const deletePost =  async () => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      if (session?.user.uid === uid) {
+        deleteDoc(doc(db, 'posts', id));
+        window.location.reload();
+        return;
+      }
+      alert("You're not authorized to delete this post.")
+    }
   };
 
   return (
-    <div className="flex justify-between gap-5 p-2 text-gray-500">
+    <div className="flex justify-start p-2 text-gray-500">
+      <div  className="flex-grow flex ">
+
       <ChatCircle
       size={"1rem"} 
       className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 hover:text-sky-500" 
       />
+      </div>
+      <div  className="flex-grow flex ">
+
       <Repeat 
       size={"1rem"}
       className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100  hover:text-green-500" 
       />
-     <div className="flex items-center gap-1.5">
+      </div>
+
+     <div className="flex items-center gap-1.5  flex-grow">
       <Heart
         onClick={likePost} 
         size={"1rem"}
@@ -73,10 +90,20 @@ function PostActions({ id }: { id: string }) {
             )
         }
      </div>
-      {/* <Trash 
-      size={"1rem"}
-      className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 hover:text-sky-500" 
-      /> */}
+    {
+      session?.user.uid === uid 
+      &&
+        (
+          <div  className="flex-grow flex ">
+            <Trash 
+            size={"1rem"}
+            className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-red-500 hover:text-white"
+            onClick={deletePost} 
+            />
+          </div>
+
+        )
+    }
     </div>
   )
 }
