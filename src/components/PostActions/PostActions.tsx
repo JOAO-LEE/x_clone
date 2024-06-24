@@ -61,8 +61,9 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
     if (session) {
       setOpen(!open)
       setPostId(id);
-
+      return;
     }
+    
   }
 
   

@@ -1,4 +1,5 @@
 export interface Post {
+  id?: string
   imageFileUrl: string
   name: string
   postText: string
