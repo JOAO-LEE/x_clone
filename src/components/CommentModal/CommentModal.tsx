@@ -7,8 +7,10 @@ import Modal from "react-modal";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { app } from "../../../firebase";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, doc, getFirestore, onSnapshot, serverTimestamp } from "firebase/firestore";
 import { Post } from "@/model/Post";
+import CommonButton from "../Button/Button";
+import { useRouter } from "next/navigation";
 
 
 export default function CommentModal() {
@@ -16,6 +18,8 @@ export default function CommentModal() {
   const [postId, setPostId] = useRecoilState(postIdState);
   const { data: session } = useSession();
   const [post, setPost] = useState<Post>();
+  const [reply, setReply] = useState("");
+  const router = useRouter();
   const db = getFirestore(app);
 
   useEffect(() => {
@@ -34,6 +38,28 @@ export default function CommentModal() {
       return () => unsubscribe();
     }
   }, [postId]);
+
+  const sendReply = async () => {
+    try {
+      const docRef = await addDoc(collection(db, 'posts', postId, "replies"), 
+      {
+        name: session?.user.name,
+        uid: session?.user.uid,
+        username: session?.user.username,
+        profileImage: session?.user.image,
+        timestamp: serverTimestamp(),
+        reply
+      }
+    )
+    setOpen(false);
+    setReply("");
+    router.push(`/posts/${postId}`)
+
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -74,17 +100,25 @@ export default function CommentModal() {
                   alt=""
                   className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95" 
                   />
+                 <div className="w-full divide-y divide-gray-200">
                   <div>
-                    <textarea 
-                    className="w-full border-none outline-none tracking-wide resize-none text-gray-700 placeholder:text-gray-500"
-                    placeholder="Post your reply"
-                    rows={2}
-                    >
-                    </textarea>
-                    <div className="flex items-center justify-end pt-2.5">
-                      <button>Reply</button>
+                      <textarea 
+                      className="w-full border-none outline-none tracking-wide resize-none text-gray-700 placeholder:text-gray-500 min-h-[50px]"
+                      placeholder="Post your reply"
+                      rows={2}
+                      value={reply}
+                      onChange={(e) => setReply(e.target.value)}
+                      >
+                      </textarea>
+                      </div>
+                      <div className="flex items-center justify-end pt-2.5">
+                        <CommonButton 
+                        disabled={reply.trim() === ""}
+                        functionality={sendReply}
+                        text="Reply"
+                        />
                     </div>
-                  </div>
+                 </div>
                 </div>
               </div>
             </Modal>

@@ -1,4 +1,5 @@
 export interface ButtonProps {
-  functionality: () => void;
+  functionality: () => void
   disabled: boolean
+  text: string
 }

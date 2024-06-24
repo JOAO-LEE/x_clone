@@ -14,10 +14,17 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
   const {data: session } = useSession();
   const [isLiked, setIsLiked] = useState<boolean>();
   const [likes, setLikes] = useState<Array<any>>([]);
+  const [replies, setReplies] = useState<Array<any>>([]);
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState)
   const db = getFirestore(app);
 
+  useEffect(() => {
+    onSnapshot(collection(db, "posts", id, "replies"), (snapshot) => {
+      setReplies(snapshot.docs)
+    });
+    return;
+  }, [])
 
   useEffect(() => {
     onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => {
@@ -30,7 +37,6 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
 
   useEffect(() => {
     setIsLiked(likes.findIndex((like) => like.id === session?.user.uid) !== -1);
-
   }, [likes]);
  
   const likePost = async (): Promise<void> => {
@@ -74,12 +80,19 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
 
   return (
     <div className="flex justify-start p-2 text-gray-500">
-      <div  className="flex-grow flex ">
+      <div  className="flex-grow flex gap-1.5 ">
         <ChatCircle
         onClick={openCommentModal}
         size={"1rem"} 
         className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 hover:text-sky-500" 
         />
+        {
+          !!replies.length 
+          &&
+            (
+              <span className="text-xs font-bold">{replies.length}</span>
+            ) 
+        }
       </div>
       <div  className="flex-grow flex ">
         <Repeat 
