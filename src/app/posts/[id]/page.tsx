@@ -4,6 +4,7 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { Post } from "@/model/Post";
 import Back from "@/components/Back/Back";
 import SinglePost from "@/components/Post/Post";
+import Replies from "@/components/Replies/Replies";
 
 export default async function Posts({ params }: Params) {
   const db = getFirestore(app);
@@ -19,6 +20,7 @@ export default async function Posts({ params }: Params) {
     <section className="max-w-xl mx-auto border-r border-l min-h-screen">
       <Back />
       <SinglePost post={postData} id={postData?.id!}/>
+      <Replies id={params!.id} />
     </section>
   )
 }   
