@@ -7,7 +7,7 @@ import {app} from "../../../firebase";
 import { useEffect, useState } from "react";
 // import { Like } from "@/model/Like";
 import { useRecoilState } from "recoil";
-import { modalState } from "@/atom/modalAtom";
+import { modalState, postIdState } from "@/atom/modalAtom";
 
 
 function PostActions({ id, uid }: { id: string, uid: string }) {
@@ -15,6 +15,7 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
   const [isLiked, setIsLiked] = useState<boolean>();
   const [likes, setLikes] = useState<Array<any>>([]);
   const [open, setOpen] = useRecoilState(modalState);
+  const [postId, setPostId] = useRecoilState(postIdState)
   const db = getFirestore(app);
 
 
@@ -50,6 +51,16 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
     }
   };
 
+  const openCommentModal = () => {
+    if (session) {
+      setOpen(!open)
+      setPostId(id);
+
+    }
+  }
+
+  
+
   const deletePost =  async () => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       if (session?.user.uid === uid) {
@@ -65,7 +76,7 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
     <div className="flex justify-start p-2 text-gray-500">
       <div  className="flex-grow flex ">
         <ChatCircle
-        onClick={() => setOpen(!open)}
+        onClick={openCommentModal}
         size={"1rem"} 
         className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 hover:text-sky-500" 
         />
