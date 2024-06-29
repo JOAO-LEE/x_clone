@@ -1,16 +1,27 @@
-import { DotsThree } from "@phosphor-icons/react/dist/ssr"
+import { DotsThree, User } from "@phosphor-icons/react/dist/ssr"
 import Link from "next/link"
 import PostActions from "../PostActions/PostActions"
 
 
 function Post({ post, id }: { post: any, id: string }) {
+  console.log(post)
   return (
     <div className="flex p-3 border-b border-gray-20 hover:bg-gray-50 transition">
-      <img 
-      src={post.profileImage} 
-      alt={`$${post.username} image`}
-      className="rounded-full h-11 w-11 mr-4" 
-      />
+    {
+      post.profileImage
+      ?
+        (
+          <img 
+          src={post.profileImage} 
+          alt={`$${post.username} image`}
+          className="rounded-full h-11 w-11 mr-4" 
+          />
+        )
+      :
+        (
+          <User />
+        )
+    }
       <div className="flex-1">
         <div 
         className="flex items-center justify-between">
@@ -36,7 +47,7 @@ function Post({ post, id }: { post: any, id: string }) {
                 className="rounded-2xl mr-2" 
                 />
               </Link>
-            ) 
+            )
         }
         <PostActions 
         id={id} 

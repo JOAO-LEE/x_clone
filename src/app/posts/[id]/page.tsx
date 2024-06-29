@@ -8,13 +8,10 @@ import Replies from "@/components/Replies/Replies";
 
 export default async function Posts({ params }: Params) {
   const db = getFirestore(app);
-  console.log(params)
+
   let postData: Post;
   const querySnapshot = await getDoc(doc(db, "posts", params!.id));
-  // console.log(querySnapshot)
   postData = {...querySnapshot.data() as Post, id: querySnapshot.id};
-
-  console.log(postData)
   
   return (
     <section className="max-w-xl mx-auto border-r border-l min-h-screen">

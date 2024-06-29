@@ -11,7 +11,6 @@ function Replies({ id }: { id: string }) {
   const [replies, setReplies] = useState<Array<Post>>([]);
 
   useEffect(() => {
-    console.log(id)
     const q = query(collection(db, "posts", id, "replies"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) =>
       {
@@ -20,9 +19,9 @@ function Replies({ id }: { id: string }) {
           ...doc.data() as Post
         }));
         setReplies(fetchedReplies);
-        console.log(fetchedReplies)
       } 
     );
+    
     return () => unsubscribe();
   }, [db, id]);
 
@@ -34,7 +33,12 @@ function Replies({ id }: { id: string }) {
           <>
             {
               replies.map((reply, index) =>  (
-                <Reply reply={reply} key={index}/>
+                <Reply 
+                postId={id}
+                replyId={reply.id!}
+                reply={reply} 
+                key={index}
+                />
               ))
             }
           </>

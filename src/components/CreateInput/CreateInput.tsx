@@ -41,7 +41,6 @@ function CreateInput() {
     const uploadTask = uploadBytesResumable(storageRef, selectedFile!);
     uploadTask.on('state_changed', (snapshot) => {
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log(progress)
     }, (error) => {
       setLoadingImage(false);
       setSelectedFile(null);

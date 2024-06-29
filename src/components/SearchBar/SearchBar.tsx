@@ -1,4 +1,4 @@
-import {MagnifyingGlass} from '@phosphor-icons/react/dist/ssr'
+import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr'
 
 function SearchBar() {
   return (

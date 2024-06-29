@@ -29,12 +29,12 @@ export default function CommentModal() {
         postRef,
         (snapshot) => {
         if (snapshot.exists()) {
-          // const how
           setPost(snapshot.data() as Post);
           return;
         }
         console.log("No such document"); 
       })
+      
       return () => unsubscribe();
     }
   }, [postId]);
@@ -55,7 +55,6 @@ export default function CommentModal() {
     setReply("");
     router.push(`/posts/${postId}`)
 
-      
     } catch (error) {
       console.log(error)
     }

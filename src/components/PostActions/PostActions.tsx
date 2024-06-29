@@ -28,7 +28,6 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
 
   useEffect(() => {
     onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => {
-      console.log(snapshot.docs);
       setLikes(snapshot.docs);
       return;
     });
@@ -41,7 +40,6 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
  
   const likePost = async (): Promise<void> => {
     if (session) {
-
       if (isLiked) {
         await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
         return;
@@ -63,10 +61,7 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
       setPostId(id);
       return;
     }
-    
   }
-
-  
 
   const deletePost =  async () => {
     if (window.confirm("Are you sure you want to delete this post?")) {
@@ -127,7 +122,6 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
             onClick={deletePost} 
             />
           </div>
-
         )
     }
     </div>
