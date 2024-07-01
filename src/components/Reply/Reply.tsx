@@ -76,12 +76,12 @@ export default function Reply({reply, postId, replyId}: { reply: any, postId: st
               </Link>
             ) 
         }
-        <div className="flex gap-1.5">
+        <div className="flex gap-1.5 text-gray-500">
           <Heart
           onClick={likePost} 
           size={"1rem"}
           weight={isLiked ? "fill" : "regular"}
-          className={`cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 ${isLiked ? "text-red-500" : "hover:text-red-500"}`} 
+          className={`cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 ${isLiked ? "text-red-500" : "hover:text-red-500"} `} 
           />
           {
             !!likes.length 
