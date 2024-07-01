@@ -88,16 +88,15 @@ function CreateInput() {
 
   const postCreatedConfirmation = () => {
     if (postCreatedRef.current) {
-      postCreatedRef.current.style.animation = "post-created-animation-showing 4s normal 500ms ease-in-out";
+      postCreatedRef.current.style.animation = "post-created-animation-showing 6s normal 500ms ease-in-out";
       postCreatedRef.current.addEventListener("animationend", () => {
         postCreatedRef.current!.style.animation = "";
       }, false);
     }
   };
   
-
   return (
-    <div className="flex border-b border-gray-200 p-3 space-x-3 w-full">
+    <div className="flex border-b border-gray-200 p-3 space-x-3 w-full relative">
       <div 
       className={`bg-blue-400 p-2 rounded-full text-gray-100 font-bold text-sm z-50 post-created`}
       ref={postCreatedRef}

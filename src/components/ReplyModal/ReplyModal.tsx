@@ -13,7 +13,7 @@ import CommonButton from "../Button/Button";
 import { useRouter } from "next/navigation";
 
 
-export default function CommentModal() {
+export default function ReplyModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const { data: session } = useSession();

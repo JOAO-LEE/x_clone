@@ -5,7 +5,7 @@ import News from "@/components/News/News";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import "./globals.css";
 import { SessionWrapper } from "@/components/SessionWrapper/SessionWrapper";
-import CommentModal from "@/components/CommentModal/CommentModal";
+import CommentModal from "@/components/ReplyModal/ReplyModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +32,7 @@ export default function RootLayout({
             <div className="w-2xl flex-1">
               {children}
             </div>
-            <div className="hidden lg:flex lg:flex-col p-3 h-screen border-l  w-[24rem]">
+            <div className="hidden lg:flex lg:flex-col p-3 h-screen border-l w-[24rem]">
               <SearchBar />
               <News />
             </div>
