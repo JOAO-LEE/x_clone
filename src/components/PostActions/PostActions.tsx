@@ -115,10 +115,10 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
       session?.user.uid === uid 
       &&
         (
-          <div  className="flex-grow flex ">
+          <div  className="flex-grow flex">
             <Trash 
             size={"1rem"}
-            className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-red-500 hover:text-white"
+            className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:border hover:border-red-500 hover:text-red-500 hover:scale-125"
             onClick={deletePost} 
             />
           </div>
