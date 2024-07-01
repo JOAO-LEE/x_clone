@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   description: "An X clone made using TypeScript, Next.js 14 and Tailwind CSS.",
 };
 
+export const dynamic = "force-dynamic"
+
 export default function RootLayout({
   children,
 }: Readonly<{
