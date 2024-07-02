@@ -109,7 +109,8 @@ function CreateInput() {
       className="h-11 w-11 rounded-full cursor-point hover:brightness-75 transition"
       />
       <div className="w-full divide-y divide-gray-200">
-        <textarea 
+        <textarea
+        spellCheck={false} 
         onChange={(e) => setPostText(e.target.value)}
         value={postText}
         placeholder="What is happening!?" 
