@@ -2,7 +2,7 @@
 
 import { ChatCircle, Heart, Repeat, Trash } from "@phosphor-icons/react";
 import { doc, getFirestore, setDoc, serverTimestamp, onSnapshot, collection, deleteDoc } from "firebase/firestore";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import {app} from "../../../firebase";
 import { useEffect, useState } from "react";
 // import { Like } from "@/model/Like";
@@ -53,14 +53,16 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
       )
       return;
     }
+    signIn();
   };
 
-  const openCommentModal = () => {
+  const openReplyModal = () => {
     if (session) {
       setOpen(!open)
       setPostId(id);
       return;
     }
+    signIn();
   }
 
   const deletePost =  async () => {
@@ -78,7 +80,7 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
     <div className="flex justify-start p-2 text-gray-500">
       <div  className="flex-grow flex gap-1.5 ">
         <ChatCircle
-        onClick={openCommentModal}
+        onClick={openReplyModal}
         size={"1rem"} 
         className="cursor-pointer rounded-full transition duration-200 ease-in-out hover:bg-sky-100 hover:text-sky-500" 
         />
