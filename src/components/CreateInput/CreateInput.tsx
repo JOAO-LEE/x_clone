@@ -67,7 +67,6 @@ function CreateInput() {
       try {
         setLoadingPost(true);
         imageUrl = await uploadImageToStorage();
-        console.log(imageUrl)
       } catch (error) {
         console.error("Error uploading image: ", error);
         setLoadingPost(false);

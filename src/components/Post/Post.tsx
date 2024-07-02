@@ -2,7 +2,6 @@ import { DotsThree, User } from "@phosphor-icons/react/dist/ssr"
 import Link from "next/link"
 import PostActions from "../PostActions/PostActions"
 
-
 function Post({ post, id }: { post: any, id: string }) {
   return (
     <div className="flex p-3 border-b border-gray-20 hover:bg-gray-50 transition">
