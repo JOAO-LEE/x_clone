@@ -28,7 +28,7 @@ function News() {
         ?
           (
             <CircleNotch
-            className="animate-spin"  
+            className="animate-spin text-sky-500"  
             size={32} 
             weight="thin" />
           )
