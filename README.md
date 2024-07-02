@@ -29,3 +29,6 @@ Additionally, for the integration of icons, [**Phosphor Icons**](https://react-i
 
 ## Related projects 
 You can check [Google Clone repository here](https://github.com/JOAO-LEE/google_clone). The deployed application it's [available here](https://google-clone-eta-henna.vercel.app/).
+
+
+teste
