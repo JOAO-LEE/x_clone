@@ -32,48 +32,60 @@ function CreateInput() {
     return;
   };
 
-  const uploadImageToStorage = () => {
-    setLoadingImage(true);
-    setUploadError(false);
-    const storage = getStorage(app);
-    const fileName = `${new Date().getTime()}${selectedFile!.name}`;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, selectedFile!);
-    uploadTask.on('state_changed', (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    }, (error) => {
-      setLoadingImage(false);
-      setSelectedFile(null);
-      setImageFileUrl(null);
-      setUploadError(true);
-    }, () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((dowloadUrl) => {
-        
-        setImageFileUrl(dowloadUrl);
+  const uploadImageToStorage = (): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      setLoadingImage(true);
+      setUploadError(false);
+      const storage = getStorage(app);
+      const fileName = `${new Date().getTime()}${selectedFile!.name}`;
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, selectedFile!);
+      
+      uploadTask.on('state_changed', (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      }, (error) => {
         setLoadingImage(false);
+        setSelectedFile(null);
+        setImageFileUrl(null);
+        setUploadError(true);
+        reject(error);
+      }, () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+          setImageFileUrl(downloadUrl);
+          setLoadingImage(false);
+          resolve(downloadUrl);
+        });
       });
-    })
+    });
   };
-
   
   const handleSubmit = async (): Promise<void> => {
     const db = getFirestore(app);
-  
+    
+    let imageUrl = null;
     if (selectedFile) {
-      setLoadingImage(true);
-      uploadImageToStorage();
+      try {
+        setLoadingPost(true);
+        imageUrl = await uploadImageToStorage();
+        console.log(imageUrl)
+      } catch (error) {
+        console.error("Error uploading image: ", error);
+        setLoadingPost(false);
+        return;
+      }
     }
 
-    const docRef = await addDoc(collection(db, 'posts'), 
-    {
+    const postData = {
       name: session.user.name,
       uid: session.user.uid,
       username: session.user.username,
       postText,
       profileImage: session.user.image,
       timestamp: serverTimestamp(),
-      imageFileUrl
-    });
+      imageFileUrl: imageUrl,
+    };
+
+    await addDoc(collection(db, 'posts'), postData);
 
     setLoadingPost(false);
     setPostText("");
