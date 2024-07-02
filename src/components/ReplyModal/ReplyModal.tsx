@@ -107,6 +107,7 @@ export default function ReplyModal() {
                       rows={2}
                       value={reply}
                       onChange={(e) => setReply(e.target.value)}
+                      spellCheck={false}
                       >
                       </textarea>
                       </div>
