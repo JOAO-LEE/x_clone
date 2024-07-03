@@ -5,16 +5,19 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import MiniProfile from "../MiniProfile/MiniProfile";
 import { SignIn, SignOut } from "@phosphor-icons/react";
+import { useRecoilState } from "recoil";
+import { logoutModalState } from "@/atom/modalAtom";
 
 function Sidebar() {
   const { data: session } = useSession();
+  const [open, setOpen] = useRecoilState(logoutModalState);
 
-  const handleSignIn = () => {
-    if (!session) {
-      signIn("google");
+  const handleLogOut = () => {
+    if (session) {
+      setOpen(!open);
       return;
     }
-    signOut();
+    signIn("google");
   }
 
   return (
@@ -45,24 +48,24 @@ function Sidebar() {
           </span>
         </Link>
           <button
-          onClick={handleSignIn}
+          onClick={handleLogOut}
           title={session ? "Sign out" : "Sign in"} 
-          className="font-semibold transition-all duration-200 hover:bg-gray-100 lg:hover:brightness-95 lg:w-48 lg:h-9 lg:shadow-md  lg:bg-blue-400 lg:text-white rounded-full group"
+          className="font-semibold transition-all duration-200 lg:hover:brightness-95 lg:w-48 lg:h-9 lg:shadow-md lg:bg-sky-500 lg:text-white rounded-full group"
           >
             {
               !session 
               ?
                 (
-                  <div className="lg:hidden flex flex-col p-3 items-center">
+                  <div className="lg:hidden flex flex-col p-3 items-center group-hover:bg-sky-300 rounded-full">
                     <SignIn className="h-8 w-8 lg:hidden group-hover:text-sky-500" />
-                    <p className="text-[9px]">Login</p>
+                    <p className="text-[9px] group-hover:text-sky-800 ">Login</p>
                   </div>
                 )
               :
                 (
-                  <div className="lg:hidden flex flex-col p-3 items-center">
+                  <div className="lg:hidden flex flex-col p-3 items-center group-hover:bg-red-200 rounded-full">
                     <SignOut className="h-6 w-6 lg:hidden  group-hover:text-red-500" />
-                    <p className="text-[9px]">Logout</p>
+                    <p className="text-[9px] group-hover:text-red-800">Logout</p>
                   </div>
                 )
             }

@@ -6,6 +6,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import "./globals.css";
 import { SessionWrapper } from "@/components/SessionWrapper/SessionWrapper";
 import CommentModal from "@/components/ReplyModal/ReplyModal";
+import LogoutModal from "@/components/LogoutModal/LogoutModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+
   return (
     <SessionWrapper>
       <html lang="en">
@@ -39,6 +40,7 @@ export default function RootLayout({
             </div>
           </div>
           <CommentModal />
+          <LogoutModal />
         </body>
       </html>
     </SessionWrapper>

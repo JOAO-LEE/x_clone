@@ -72,7 +72,7 @@ function PostActions({ id, uid }: { id: string, uid: string }) {
         window.location.reload();
         return;
       }
-      alert("You're not authorized to delete this post.")
+      alert("You're not authorized to delete this post.");
     }
   };
 
