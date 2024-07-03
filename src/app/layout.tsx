@@ -15,18 +15,19 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic"
-
+// hidden sm:inline
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <SessionWrapper>
       <html lang="en">
         <body className={inter.className}>
-          <div className="flex justify-between max-w-6xl mx-auto">
-            <div className="hidden sm:inline border-r h-screen sticky top-0">
+          <div className="flex flex-col-reverse lg:flex-row lg:justify-between max-w-6xl mx-auto">
+            <div className="border-t w-full bg-white md:bg-transparent md:w-min md:border-r md:h-screen fixed bottom-0 md:sticky md:top-0">
               <Sidebar />
             </div>
             <div className="w-2xl flex-1">
